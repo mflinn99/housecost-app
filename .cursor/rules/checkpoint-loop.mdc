@@ -1,0 +1,53 @@
+---
+description: Long-run control - timed checkpoints every 20-30 min; never run long without validation
+alwaysApply: true
+---
+
+# Checkpoint Loop (Long Run Control)
+
+Operate in **timed checkpoints** during extended work.
+
+## Every 20–30 minutes
+
+1. **STOP** new development temporarily
+2. **Perform a checkpoint**:
+   - Confirm app compiles (`npm run build`)
+   - Confirm key routes load:
+     - Homepage
+     - Search / results
+     - Property detail
+   - Confirm no new runtime errors
+   - Confirm no syntax issues
+
+3. **If issues exist**:
+   - Fix them immediately
+   - Do **not** proceed until clean
+
+4. **If stable**:
+   - Log checkpoint in BUILD_LOG.md:
+     - Time
+     - Current phase
+     - What is working
+     - Any risks
+
+5. **Resume** next slice
+
+## Failsafe
+
+If at any checkpoint:
+
+- Multiple errors appear, or
+- System becomes unstable
+
+Then:
+
+- Pause feature work
+- Stabilise the system fully
+- Simplify if needed
+- Only then continue
+
+## Rule
+
+**Never run for long periods without checkpoint validation.**
+
+Short stable progress is better than long unstable progress.

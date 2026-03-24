@@ -1,0 +1,35 @@
+---
+description: Critical control - validate after every change; never build on broken state
+alwaysApply: true
+---
+
+# Continuous Validation Loop (Critical Control)
+
+After **every** file change or update:
+
+1. **Verify compile** — mentally / structurally ensure the app would build
+2. **Check**:
+   - JSX validity (closing tags, balanced parentheses)
+   - Malformed conditionals (`&&` / `? :` — ensure `)}` not `}`)
+   - TypeScript type safety
+3. **Ensure**:
+   - No broken imports
+   - No missing dependencies
+   - No invalid component usage
+
+4. **Only proceed** if the app would compile cleanly.
+
+## When in doubt
+
+- Simplify the implementation
+- Choose the safer pattern
+- Avoid complex nested JSX
+
+## Every 2–3 iterations
+
+- Run `npm run build` or `npm run dev` to confirm app runs on localhost
+- Do not allow multiple errors to accumulate
+
+## Rule
+
+**Never continue building on top of a broken state. Always stabilise before proceeding.**

@@ -1,0 +1,24 @@
+---
+description: Hard stop once all phases complete; no further development after lock
+alwaysApply: true
+---
+
+# End Condition Lock
+
+Once **ALL phases** are complete **AND**:
+
+- App compiles cleanly
+- No blocking runtime errors
+- Key flows work
+- Logs are updated
+- Backup is created
+
+Then:
+
+1. **STOP** all development
+2. **Do NOT** add improvements
+3. **Do NOT** refactor further
+4. Write final summary
+5. Leave system stable
+
+**No further changes beyond this point.**

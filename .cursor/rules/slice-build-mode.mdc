@@ -1,0 +1,70 @@
+---
+description: Anti-collapse control - build in small, complete slices; never combine
+alwaysApply: true
+---
+
+# Slice Build Mode (Anti-Collapse Control)
+
+Build in **small, complete slices** only.
+
+## Definition of a slice
+
+- One feature
+- Fully implemented
+- Fully tested
+- Fully stable
+
+## Phase / Slice Completion (Final Guardrail)
+
+**Do NOT mark a phase or slice complete just because code was written.**
+
+A phase is complete **only** when:
+
+1. **Compiles** — `npm run build` passes
+2. **Exercisable** — the feature can be used in the UI *or* validated logically (e.g. via tests)
+3. **Logged** — the change is recorded in BUILD_LOG.md and/or QA_LOG.md
+
+Only then proceed.
+
+## Rules
+
+1. **Only work on ONE slice at a time**
+2. A slice is **not complete** until all three conditions above are met
+3. **Do NOT** start a new slice until the current one is stable
+4. If a slice becomes unstable:
+   - stop
+   - fix
+   - simplify
+   - continue
+
+## Example slices
+
+- SearchControls component
+- Nearby radius slider
+- Map markers
+- Property detail page
+- Cost calculation engine
+
+**Never combine slices.**
+
+## Self-check before moving on
+
+Before starting the next slice, confirm:
+
+- No syntax errors
+- No runtime errors
+- No broken imports
+- UI renders correctly
+- Logic works as expected
+
+Only then proceed.
+
+## Fail-safe rule
+
+If **more than one error** appears:
+
+- Stop new work
+- Fix all errors first
+- Resume only when clean
+
+**Never build on top of a broken state.**
