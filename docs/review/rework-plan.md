@@ -9,6 +9,7 @@
 2. **Buy/Rent coherence**
    - Ensure both intents return coherent result sets.
    - Ensure intent is preserved across homepage -> search -> detail.
+   - Ensure recommendation engine uses rent semantics for rent listings.
 
 3. **Input->output integrity**
    - Guarantee homepage inputs map to downstream filtering and recommendation.
@@ -16,7 +17,10 @@
 4. **No silent query rewriting**
    - Replace hidden fallback behavior with explicit local-coverage messaging.
 
-## P1 — Improve in This Pass
+5. **Remove weak output that breaks decision trust**
+   - Remove/replace any recommendation using wrong cost model for selected intent.
+
+## P1 — Improve in This Pass (deferred in this instruction set)
 
 1. **Homepage structure**
    - Keep one control surface and one supporting market note.
@@ -43,11 +47,10 @@
 2. Further simplify secondary modules (compare/seller) into stricter decision outputs.
 3. Visual token cleanup for borders/radii consistency across all screens.
 
-## Execution Sequence
+## Execution Sequence (P0-only for current pass)
 
 1. Fix route and intent integrity.
 2. Fix buy/rent data coherence.
-3. Tighten homepage/search/result hierarchy.
-4. Tighten detail recommendation clarity.
-5. Validate (`build`, `lint`, key flows).
-6. Write final summary and close.
+3. Remove wrong-model decision outputs that weaken authority.
+4. Validate (`build`, `lint`, key flows).
+5. Stop.

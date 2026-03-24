@@ -1,74 +1,92 @@
 # Full Audit
 
-## A. Functional Drift
+## A. Functional Drift (Precise)
 
-### 1) Buy/Rent logic is inconsistent and partially broken
-- `rent` intent is not coherently supported by the current listing pipeline.
-- The provider model is effectively buy-first and can return sparse or zero rent outcomes depending on filter paths.
-- Core issue: intent is treated as a UI toggle in some places and as a true data mode in others.
+### 1) Buy/Rent decision logic is incorrect for rent inventory
+- `lib/market/decisionEngine.ts` computes **mortgage ownership cost** for all listings, including rent (`pcm`) listings.
+- Result: rent recommendations can be based on invalid cost semantics.
+- Severity: **P0** because output authority is broken.
 
-### 2) Search state is not carried consistently
+### 2) Search state continuity is still fragile
 - `q`, `intent`, `maxBudget`, and filters are not reliably preserved across transitions (search -> detail -> nearby -> back, and save/restore paths).
-- This creates drift between what users entered and what downstream components evaluate.
+- This can create drift between user input and evaluated recommendation context.
 
-### 3) Route handling has been fragile
-- `/search` has changed implementation style multiple times, creating production fragility risk.
-- App Router parameter handling has been brittle when mixed with server/client assumptions.
+### 3) Route handling has been fragile (recently stabilized)
+- `/search` changed implementation style multiple times.
+- App Router param handling is now wrapped safely, but this area remains high-risk for regressions.
 
-### 4) Nearby behavior can mask user input
-- Out-of-scope locations are coerced silently to Manchester in nearby flow.
-- This is functional deception: user intent is rewritten instead of surfaced.
+### 4) Nearby out-of-coverage behavior was deceptive (fixed in rework)
+- Prior behavior silently rewrote out-of-scope queries to Manchester.
+- Required standard: explicit no-results/local-coverage messaging only.
 
-### 5) Intent defaults cause incorrect context
-- Several routes/components can default to an intent that does not match the originating flow.
-- Result: recommendation and calculator context can be wrong for the same listing.
+### 5) Intent fallback remains a regression risk
+- Property pages can still rely on query-param intent unless derived from listing data.
+- Required standard: listing-derived intent must be authoritative when mismatch occurs.
 
-### 6) Input->output mapping is uneven
-- Homepage now captures mode/location/budget, but downstream interpretation and recommendation do not always reflect all three inputs consistently.
+### 6) Input->output mapping is not uniformly strict
+- Homepage captures mode/location/budget.
+- Some downstream recommendation blocks still use listing defaults more than active scenario context.
 
-## B. UX Drift
+## B. UX Drift (Precise)
 
-### 1) Too many competing messages
-- Homepage and detail pages include multiple advisory lines that reduce clarity.
-- Users are asked to parse copy before acting.
+### 1) Detail page asks users to parse too many advisory lines
+- Decision panel + negotiation note + "what/why/do" helper lines can overlap.
+- This weakens single-step decisiveness.
 
-### 2) Control hierarchy has become noisy
-- Search controls include too many explanatory labels and utility actions in contexts that should be single-purpose.
-- Decision guidance is present but often diluted by secondary text.
+### 2) Search module has label density creep
+- Step labels, helper lines, and utility controls have repeatedly expanded/contracted.
+- Target is one dominant action surface; current state is improved but still easy to regress.
 
-### 3) Results are not always decisive
-- Cards and detail views show many signals, but the primary next action can still be ambiguous.
+### 3) Results cards can still over-communicate
+- Decision, rationale, metadata, and transport are all present in tile view.
+- Action is clearer than before, but card payload is near threshold for clutter.
 
-### 4) Copy quality is inconsistent
-- Some sections are sharp and commercially credible.
-- Others still read as prototype helper text or generic UX scaffolding.
+### 4) Copy quality is uneven across modules
+- Homepage/search tone is stronger.
+- Compare/saved/seller auxiliary pages still contain utility or prototype phrasing.
 
-## C. Visual Drift
+## C. Visual Drift (Precise)
 
-### 1) Card overuse and border density
-- Too many bordered containers and stacked sections make the interface feel like a dashboard prototype.
+### 1) Border density remains high
+- Multiple consecutive bordered cards reduce visual confidence and increase "dashboard soup" feel.
 
-### 2) Uneven typography hierarchy
-- Key decisions and secondary metadata can appear too close in weight/size.
-- Primary action intent is occasionally visually underpowered.
+### 2) Typographic hierarchy is still mixed
+- In several screens, recommendation text and supporting metadata are too close in visual weight.
 
-### 3) Hero/search coherence regressed and recovered repeatedly
-- The hero + control surface has been iterated often; consistency is improving but still needs simplification around the single core action.
+### 3) Hero/control surface is correct but fragile
+- Flow is now coherent; however, repeated iteration indicates this area is vulnerable to future drift.
 
-### 4) Visual tone occasionally drifts from premium restraint
-- Some UI blocks still look utility-first rather than analyst-grade.
+### 4) Secondary sections still look utility-first
+- Saved/compare/seller surfaces are less composed than homepage/search.
 
-## D. Spirit Drift
+## D. Spirit Drift (Precise)
 
-### 1) Product occasionally feels portal-like
-- Listing/nearby/seller surfaces can feel like separate mini-products rather than one disciplined decision engine.
+### 1) Product cohesion is incomplete
+- Core buyer flow is decision-led.
+- Adjacent modules still feel like separate tools rather than one intelligence product.
 
-### 2) Intelligence tone is not consistently enforced
-- Some recommendations are strong and actionable.
-- Other sections still read like broad informational copy.
+### 2) Decision authority is strongest in core flow, weaker in satellites
+- Recommendation authority is solid on listing/detail.
+- Compare/seller guidance remains less tightly evidence-first.
 
-### 3) Scope discipline has been challenged
-- The app has accumulated overlapping modules; not all contribute to the core "decide what to do next" moment.
+### 3) Scope discipline remains a risk
+- Any new non-core sections will quickly degrade product spirit unless aggressively constrained.
+
+## Explicit UI Removals Required
+
+The following should be removed (or kept out) unless directly required for a decision:
+
+1. Repeated helper labels that restate obvious controls.
+2. Duplicate advisory lines that do not change user action.
+3. Lifestyle/event/demographic blocks without direct pricing/negotiation relevance.
+4. Decorative card wrappers around low-value text.
+5. Any copy that implies certainty without visible assumptions.
+
+## Remaining Fragile Flows
+
+1. Rent decision outputs using buy-cost semantics (P0 until fixed).
+2. Future regressions in `/search` param handling if moved away from current safe pattern.
+3. Search-state continuity across save/restore and nearby transitions if URL state is not treated as canonical.
 
 ## Blunt Summary
 

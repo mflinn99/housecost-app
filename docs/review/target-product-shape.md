@@ -30,6 +30,28 @@
 4. **What next?** (single next step)
 5. Secondary details (transport, extras, saved/compare utilities)
 
+### Exact hierarchy by screen
+
+#### Homepage
+1. Identity + one-line value proposition
+2. Primary search control surface (Buy/Rent -> Location -> Budget -> Search)
+3. One market stance line
+4. One supporting local insight line
+5. Everything else below fold
+
+#### Search module
+1. Intent toggle
+2. Location input
+3. Budget input
+4. Primary Search button
+5. Validation feedback only when needed
+
+#### Results page
+1. Results count + local scope signal
+2. Decision-first listing cards
+3. Filters/utilities as secondary controls
+4. Empty state with explicit local guidance
+
 ## 4. Design System Direction
 
 - **Spacing:** fewer containers, clearer section spacing, avoid stacked card soup.
@@ -53,6 +75,12 @@
 - Any section not directly supporting decision-making.
 - Excess explanatory helper copy.
 - Over-detailed lifestyle blocks that do not affect recommendation.
+- Secondary UI complexity that does not improve action clarity.
+
+### Explicit removals
+- Duplicate explanatory labels in search controls.
+- Multiple "what/why/do" paragraphs when one recommendation block is sufficient.
+- Non-decision dashboard panels in the core buyer flow.
 
 ## 6. Results Experience
 

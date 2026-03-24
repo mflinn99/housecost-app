@@ -97,7 +97,7 @@ export function PropertyDetailClient({
             <div className="mt-4 rounded-sm border border-stone-200/90 bg-stone-50/60 p-3">
               <p className="text-xs font-medium uppercase tracking-wider text-stone-500">Assessment output</p>
               <div className="mt-2 grid gap-2 text-sm text-stone-700 sm:grid-cols-2">
-                <p>Estimated monthly ownership: {formatCurrency(decision.estimatedMonthlyOwnershipCost)}</p>
+                <p>Estimated monthly housing cost: {formatCurrency(decision.estimatedMonthlyOwnershipCost)}</p>
                 <p>Affordability pressure: {decision.affordabilityPressure}</p>
                 <p>Local price position: {decision.localPricePosition}</p>
                 <p>Negotiation stance: {decision.negotiationStance}</p>
