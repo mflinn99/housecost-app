@@ -1,7 +1,7 @@
 import { SearchResultsClient } from "@/features/search/components/SearchResultsClient";
 
 interface SearchPageProps {
-  searchParams: Promise<{ q?: string; intent?: string; mode?: string }>;
+  searchParams: Promise<{ q?: string; intent?: string; mode?: string; maxBudget?: string }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
@@ -9,6 +9,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = params.q ?? "";
   const intent = (params.intent === "rent" ? "rent" : "buy") as "rent" | "buy";
   const mode = params.mode === "nearby" ? "nearby" : "search";
+  const maxBudget = params.maxBudget ? Number(params.maxBudget) : undefined;
+  const initialMaxBudget =
+    maxBudget != null && Number.isFinite(maxBudget) && maxBudget > 0 ? Math.round(maxBudget) : undefined;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -16,6 +19,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         initialQuery={query}
         initialIntent={intent}
         initialMode={mode}
+        initialMaxBudget={initialMaxBudget}
       />
     </div>
   );

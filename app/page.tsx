@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 import { SearchControls } from "@/features/search/components/SearchControls";
 import { MANCHESTER_PROPERTIES } from "@/data/manchester-properties";
 import { getOverallMarketSnapshot, getPriceDelta } from "@/lib/market/marketCalculations";
@@ -31,22 +32,32 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <main className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-5">
-        <header className="mb-6">
-          <h1 className="text-base font-medium tracking-tight text-stone-800">Mattsnoop</h1>
-          <p className="mt-0.5 text-sm text-stone-600">
-            Manchester + Salford decision intelligence for buying and renting
-          </p>
-        </header>
+        <section className="mb-6 rounded-sm border border-stone-200/90 bg-white/70 px-4 py-4 sm:px-5 sm:py-5">
+          <div className="flex items-start gap-3">
+            <Logo className="pointer-events-none" />
+            <div>
+              <p className="text-sm font-medium tracking-tight text-stone-800">
+                Manchester + Salford property decision intelligence
+              </p>
+              <p className="mt-1 text-sm text-stone-600">
+                If your ideal property is out there, we&apos;ll find it.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <section className="mb-5 rounded-sm border border-stone-200/90 bg-white/70 px-3.5 py-3">
           <p className="text-sm font-semibold text-stone-800">{marketStance}</p>
           <p className="mt-1 text-xs text-stone-600">{topInsight}</p>
         </section>
 
-        <section className="mb-5">
-          <h2 className="mb-2.5 text-xs font-medium uppercase tracking-wider text-stone-500">Assess</h2>
-          <div className="rounded-sm border border-stone-200/90 bg-white/70 p-3">
-            <SearchControls initialQuery="" initialIntent="buy" />
+        <section className="mb-6 rounded-sm border border-stone-200/90 bg-white/80 p-3.5 sm:p-4">
+          <h2 className="mb-1.5 text-sm font-semibold text-stone-800">Search a property scenario</h2>
+          <p className="mb-3 text-xs text-stone-600">
+            Choose mode, set location and value, then run a local intelligence assessment.
+          </p>
+          <div>
+            <SearchControls initialQuery="" initialIntent="buy" showCloseBy={false} />
           </div>
         </section>
 

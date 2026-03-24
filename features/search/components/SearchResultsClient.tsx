@@ -14,17 +14,21 @@ interface SearchResultsClientProps {
   initialQuery: string;
   initialIntent: SearchIntent;
   initialMode?: "search" | "nearby";
+  initialMaxBudget?: number;
 }
 
 export function SearchResultsClient({
   initialQuery,
   initialIntent,
   initialMode = "search",
+  initialMaxBudget,
 }: SearchResultsClientProps) {
   const [query] = useState(initialQuery);
   const [intent] = useState(initialIntent);
   const [mode] = useState(initialMode);
-  const [filters, setFilters] = useState<ListingFilters>({});
+  const [filters, setFilters] = useState<ListingFilters>(
+    initialMaxBudget != null ? { maxBudget: initialMaxBudget } : {}
+  );
   const [listings, setListings] = useState<Awaited<ReturnType<typeof searchListings>> | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +60,7 @@ export function SearchResultsClient({
     return (
       <div className="space-y-6">
         <div className="rounded-sm border border-stone-200/90 bg-white/70 p-3">
-          <SearchControls initialQuery="" initialIntent={initialIntent} />
+          <SearchControls initialQuery="" initialIntent={initialIntent} initialMaxBudget={initialMaxBudget} />
         </div>
         <p className="text-left text-sm text-stone-500">
           Assess a local search using Manchester, Salford or an M postcode.
@@ -85,6 +89,7 @@ export function SearchResultsClient({
         <SearchControls
           initialQuery={query}
           initialIntent={intent}
+          initialMaxBudget={initialMaxBudget}
           compact
         />
       </div>
