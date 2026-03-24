@@ -142,7 +142,7 @@ export default function BriefPage() {
         </section>
 
         <p className="mt-6 text-xs text-stone-500">
-          You remain anonymous. Select agents to reveal your identity when you're ready to proceed.
+          You remain anonymous. Select agents to reveal your identity when you&apos;re ready to proceed.
         </p>
       </main>
     </div>

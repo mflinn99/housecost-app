@@ -122,9 +122,6 @@ export function ListingCard({ listing, searchQuery, searchIntent }: ListingCardP
             </span>
           )}
         </div>
-        <p className="mt-1.5 text-[10px] text-stone-400">
-          {listing.source}
-        </p>
       </div>
     </Link>
   );

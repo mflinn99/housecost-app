@@ -5,11 +5,13 @@ import { getMockAreaIntelligence } from "@/services/providers/mock-area";
 import { ComparableBarChart, type DistributionBar } from "@/features/charts";
 import { VibeScoreCard } from "@/features/vibe-score/VibeScoreCard";
 import type { GeoLocation, TransportInfo } from "@/types";
+import { getAreaBenchmark } from "@/data/localBenchmarks";
 
 interface AreaIntelligenceProps {
   location?: GeoLocation;
   transport?: TransportInfo;
   parking?: string;
+  postcodeDistrict?: string;
   amenitiesChartData?: DistributionBar[];
 }
 
@@ -17,9 +19,11 @@ export function AreaIntelligence({
   location,
   transport,
   parking,
+  postcodeDistrict,
   amenitiesChartData,
 }: AreaIntelligenceProps) {
   const area = getMockAreaIntelligence(location, transport);
+  const benchmark = getAreaBenchmark(postcodeDistrict);
   const { demographics, amenities, scores, sportsVenues, eventVenues, eventActivityLevel, localHighlights, areaSummary } =
     area;
 
@@ -37,6 +41,20 @@ export function AreaIntelligence({
 
   return (
     <div className="space-y-6">
+      <Card>
+        <h2 className="text-lg font-semibold">{benchmark.area} intelligence note</h2>
+        <div className="mt-3 space-y-1 text-sm text-stone-700">
+          <p>Pricing snapshot: avg asking {`£${benchmark.averagePrice.toLocaleString()}`}.</p>
+          <p>Market direction: {benchmark.marketTrendDirection}.</p>
+          <p>
+            Leverage: {benchmark.buyerLeverage === "buyer" ? "buyer leverage" : benchmark.buyerLeverage === "seller" ? "seller leverage" : "balanced leverage"}.
+          </p>
+          <p className="text-stone-600">
+            What this means: prioritize local sold comparables before committing on price.
+          </p>
+        </div>
+      </Card>
+
       {areaSummary && (
         <Card>
           <h2 className="text-lg font-semibold">Area snapshot</h2>

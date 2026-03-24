@@ -33,7 +33,9 @@ export default function HomePage() {
       <main className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-5">
         <header className="mb-6">
           <h1 className="text-base font-medium tracking-tight text-stone-800">Mattsnoop</h1>
-          <p className="mt-0.5 text-sm text-stone-600">Property cost and local market intelligence</p>
+          <p className="mt-0.5 text-sm text-stone-600">
+            Manchester + Salford decision intelligence for buying and renting
+          </p>
         </header>
 
         <section className="mb-5 rounded-sm border border-stone-200/90 bg-white/70 px-3.5 py-3">
@@ -75,7 +77,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mt-5">
+        <section className="mt-4">
           <h2 className="mb-2.5 text-xs font-medium uppercase tracking-wider text-stone-500">Sample listings</h2>
           <div className="space-y-2">
             {listings.map((listing) => (
