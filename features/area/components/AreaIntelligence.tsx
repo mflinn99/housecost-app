@@ -3,14 +3,12 @@
 import { Card } from "@/components/ui/Card";
 import { getMockAreaIntelligence } from "@/services/providers/mock-area";
 import { ComparableBarChart, type DistributionBar } from "@/features/charts";
-import { VibeScoreCard } from "@/features/vibe-score/VibeScoreCard";
 import type { GeoLocation, TransportInfo } from "@/types";
 import { getAreaBenchmark } from "@/data/localBenchmarks";
 
 interface AreaIntelligenceProps {
   location?: GeoLocation;
   transport?: TransportInfo;
-  parking?: string;
   postcodeDistrict?: string;
   amenitiesChartData?: DistributionBar[];
 }
@@ -18,14 +16,12 @@ interface AreaIntelligenceProps {
 export function AreaIntelligence({
   location,
   transport,
-  parking,
   postcodeDistrict,
   amenitiesChartData,
 }: AreaIntelligenceProps) {
   const area = getMockAreaIntelligence(location, transport);
   const benchmark = getAreaBenchmark(postcodeDistrict);
-  const { demographics, amenities, scores, sportsVenues, eventVenues, eventActivityLevel, localHighlights, areaSummary } =
-    area;
+  const { amenities, scores, areaSummary } = area;
 
   const amenitiesBars: DistributionBar[] =
     amenitiesChartData ??
@@ -62,8 +58,6 @@ export function AreaIntelligence({
         </Card>
       )}
 
-      <VibeScoreCard area={area} parking={parking as "driveway" | "on_street" | "permit" | "garage" | "none" | undefined} />
-
       <Card>
         <h2 className="text-lg font-semibold">Area scores</h2>
         <p className="mt-1 text-xs text-stone-500">Within 1–2km. Estimate based on local data.</p>
@@ -86,110 +80,9 @@ export function AreaIntelligence({
         </div>
       </Card>
 
-      {localHighlights && (
-        <Card>
-          <h2 className="text-lg font-semibold">What&apos;s nearby</h2>
-          <p className="mt-1 text-xs text-stone-500">Local highlights by category</p>
-          <div className="mt-4 space-y-4">
-            {localHighlights.foodAndDrink && (
-              <div>
-                <p className="text-sm font-medium text-stone-700">{localHighlights.foodAndDrink.name}</p>
-                <p className="text-sm text-stone-600">{localHighlights.foodAndDrink.summary}</p>
-                {localHighlights.foodAndDrink.examples && (
-                  <p className="mt-1 text-xs text-stone-500">
-                    {localHighlights.foodAndDrink.examples.join(" · ")}
-                  </p>
-                )}
-              </div>
-            )}
-            {localHighlights.thingsToDo && (
-              <div>
-                <p className="text-sm font-medium text-stone-700">{localHighlights.thingsToDo.name}</p>
-                <p className="text-sm text-stone-600">{localHighlights.thingsToDo.summary}</p>
-              </div>
-            )}
-            {localHighlights.entertainment && (
-              <div>
-                <p className="text-sm font-medium text-stone-700">{localHighlights.entertainment.name}</p>
-                <p className="text-sm text-stone-600">{localHighlights.entertainment.summary}</p>
-              </div>
-            )}
-            {localHighlights.outdoorSpaces && (
-              <div>
-                <p className="text-sm font-medium text-stone-700">{localHighlights.outdoorSpaces.name}</p>
-                <p className="text-sm text-stone-600">{localHighlights.outdoorSpaces.summary}</p>
-              </div>
-            )}
-          </div>
-        </Card>
-      )}
-
-      {(sportsVenues || eventVenues || eventActivityLevel) && (
-        <Card>
-          <h2 className="text-lg font-semibold">Lifestyle & events</h2>
-          <p className="mt-1 text-xs text-stone-500">Sports, venues, event activity</p>
-          <div className="mt-4 space-y-3">
-            {eventActivityLevel && (
-              <div>
-                <p className="text-sm text-stone-600">Event activity level</p>
-                <p className="font-medium capitalize">{eventActivityLevel}</p>
-              </div>
-            )}
-            {sportsVenues && (
-              <div>
-                <p className="text-sm text-stone-600">Sports venues nearby</p>
-                <p className="text-stone-900">{sportsVenues.count} within radius</p>
-                {sportsVenues.nearest && (
-                  <p className="text-xs text-stone-500">
-                    Nearest: {sportsVenues.nearest.name} ({sportsVenues.nearest.walkMinutes} min walk)
-                  </p>
-                )}
-              </div>
-            )}
-            {eventVenues && (
-              <div>
-                <p className="text-sm text-stone-600">Event venues nearby</p>
-                <p className="text-stone-900">{eventVenues.count} within radius</p>
-                {eventVenues.nearest && (
-                  <p className="text-xs text-stone-500">
-                    Nearest: {eventVenues.nearest.name} ({eventVenues.nearest.walkMinutes} min walk)
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        </Card>
-      )}
-
       <Card>
-        <h2 className="text-lg font-semibold">Amenities nearby</h2>
+        <h2 className="text-lg font-semibold">Amenities context</h2>
         <ComparableBarChart data={amenitiesBars} height={160} />
-      </Card>
-
-      <Card>
-        <h2 className="text-lg font-semibold">Demographics</h2>
-        <p className="mt-1 text-xs text-stone-500">Estimated for area</p>
-        <div className="mt-4 space-y-4">
-          <div>
-            <p className="text-sm text-stone-600">Average age</p>
-            <p className="font-medium">{demographics.averageAge}</p>
-          </div>
-          <div>
-            <p className="text-sm text-stone-600">Renters</p>
-            <p className="font-medium">{Math.round(demographics.renterVsOwnerRatio * 100)}%</p>
-          </div>
-          <div>
-            <p className="text-sm text-stone-600">Household types</p>
-            <ul className="mt-1 space-y-1 text-sm">
-              {demographics.householdTypes.map((h) => (
-                <li key={h.type} className="flex justify-between">
-                  <span>{h.type}</span>
-                  <span>{h.percent}%</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </Card>
     </div>
   );

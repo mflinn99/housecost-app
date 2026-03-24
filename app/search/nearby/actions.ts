@@ -31,9 +31,16 @@ export async function getNearbyListings(
   intent: SearchIntent,
   radiusKm: number
 ): Promise<{ listings: NearbyListing[]; centre: { lat: number; lng: number } }> {
+  const trimmed = query.trim();
+  if (trimmed && !LOCAL_QUERY_PATTERN.test(trimmed)) {
+    return {
+      listings: [],
+      centre: getCentreForQuery("Manchester"),
+    };
+  }
+
   const provider = new MockListingsProvider();
-  const safeQuery = LOCAL_QUERY_PATTERN.test(query) ? query : "Manchester";
-  const centre = getCentreForQuery(safeQuery);
+  const centre = getCentreForQuery(trimmed || "Manchester");
   const allResult = await provider.search({ query: "", intent }, {});
 
   const withDistance = allResult.listings

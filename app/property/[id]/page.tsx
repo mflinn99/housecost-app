@@ -15,11 +15,12 @@ export default async function PropertyPage({
   const { q: query, intent } = await searchParams;
   const listing = await getListingById(id);
   if (!listing) notFound();
+  const derivedIntent = listing.priceType === "pcm" ? "rent" : "buy";
   return (
     <PropertyDetailClient
       listing={listing}
       searchQuery={query ?? ""}
-      searchIntent={(intent === "buy" ? "buy" : "rent") as "rent" | "buy"}
+      searchIntent={(intent === "buy" || intent === "rent" ? intent : derivedIntent) as "rent" | "buy"}
     />
   );
 }

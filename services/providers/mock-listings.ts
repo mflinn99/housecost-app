@@ -7,7 +7,7 @@ import { MANCHESTER_PROPERTIES } from "@/data/manchester-properties";
 import { getPriceDelta } from "@/lib/market/marketCalculations";
 import type { IPropertyListingsProvider, ListingsSearchResult } from "./property-listings.interface";
 
-const MANCHESTER_LISTINGS: PropertyListing[] = MANCHESTER_PROPERTIES.map((property) => {
+const BUY_LISTINGS: PropertyListing[] = MANCHESTER_PROPERTIES.map((property) => {
   const delta = getPriceDelta(property);
   return {
     id: property.id,
@@ -32,6 +32,30 @@ const MANCHESTER_LISTINGS: PropertyListing[] = MANCHESTER_PROPERTIES.map((proper
     localAverageSoldPrice: delta.localAverageSoldPrice,
   };
 });
+
+const RENT_LISTINGS: PropertyListing[] = MANCHESTER_PROPERTIES.map((property) => {
+  const derivedMonthly = Math.max(850, Math.round(property.price * 0.0042 / 25) * 25);
+  return {
+    id: `${property.id}-r`,
+    sourceUrl: `https://example.com/listing/${property.id}-r`,
+    source: `${property.sourceLabel} (rent modelled)`,
+    lastRefreshed: new Date().toISOString(),
+    title: `${property.bedrooms} bed ${property.propertyType}`,
+    address: `${property.postcodeDistrict}, ${property.postcode}`,
+    displayPrice: `£${derivedMonthly.toLocaleString()} pcm`,
+    priceValue: derivedMonthly,
+    priceType: "pcm",
+    bedrooms: property.bedrooms,
+    propertyType: property.propertyType,
+    listedDate: "2026-02-01",
+    daysOnMarket: property.daysOnMarket,
+    location: { lat: property.latitude, lng: property.longitude },
+    postcode: property.postcode,
+    postcodeArea: property.postcodeDistrict,
+  };
+});
+
+const MANCHESTER_LISTINGS: PropertyListing[] = [...BUY_LISTINGS, ...RENT_LISTINGS];
 
 function matchesQuery(listing: PropertyListing, query: string): boolean {
   if (!query.trim()) return true;

@@ -31,7 +31,7 @@ export function SavedClient() {
             {searches.map((s) => (
               <li key={s.id} className="flex items-center justify-between rounded-lg border border-stone-200 bg-white p-3">
                 <Link
-                  href={`/search?q=${encodeURIComponent(s.query)}&intent=${s.intent}`}
+                  href={`/search?q=${encodeURIComponent(s.query)}&intent=${s.intent}${s.filters.maxBudget ? `&maxBudget=${s.filters.maxBudget}` : ""}`}
                   className="font-medium text-stone-900 hover:underline"
                 >
                   {s.query} — {s.intent}
@@ -65,7 +65,7 @@ export function SavedClient() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
                       <Link
-                        href={`/property/${listing.id}`}
+                        href={`/property/${listing.id}?intent=${listing.priceType === "pcm" ? "rent" : "buy"}`}
                         className="font-medium text-stone-900 hover:underline"
                       >
                         {listing.displayPrice}

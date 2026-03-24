@@ -107,7 +107,7 @@ export function CompareClient() {
             <tr key={l.id} className="border-b border-stone-100">
               <td className="p-4">
                 <Link
-                  href={`/property/${l.id}`}
+                  href={`/property/${l.id}?intent=${l.priceType === "pcm" ? "rent" : "buy"}`}
                   className="font-medium text-stone-900 hover:underline"
                 >
                   {l.address}

@@ -180,7 +180,6 @@ export function PropertyDetailClient({
           <AreaIntelligence
             location={listing.location}
             transport={listing.transport}
-            parking={listing.parking}
             postcodeDistrict={listing.postcodeArea}
           />
         </div>
