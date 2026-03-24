@@ -68,10 +68,10 @@ export function SearchControls(props: SearchControlsProps) {
   }
 
   return (
-    <form onSubmit={handleSearch} className="space-y-3">
-      <div className={compact ? "grid gap-2 sm:grid-cols-2" : "grid gap-2 sm:grid-cols-3"}>
-        <div className="rounded-sm border border-stone-200/90 bg-white/70 px-2.5 py-2">
-          <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-stone-500">Step 1 · Mode</p>
+    <form onSubmit={handleSearch} className="space-y-2.5">
+      <div className={compact ? "grid gap-2 sm:grid-cols-2" : "grid gap-2 md:grid-cols-3"}>
+        <div className="rounded-sm border border-stone-200/80 bg-white/70 px-2.5 py-2">
+          <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-stone-500">Mode</p>
           <div className="flex rounded border border-stone-200/90 bg-stone-50/50 p-0.5">
             <button
               type="button"
@@ -98,21 +98,21 @@ export function SearchControls(props: SearchControlsProps) {
           </div>
         </div>
 
-        <div className="rounded-sm border border-stone-200/90 bg-white/70 px-2.5 py-2">
-          <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-stone-500">Step 2 · Location</p>
+        <div className="rounded-sm border border-stone-200/80 bg-white/70 px-2.5 py-2">
+          <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-stone-500">Location</p>
           <Input
             type="text"
             placeholder="Manchester, Salford, postcode"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-9 rounded border-stone-300/90 text-sm"
+            className="h-9 rounded border-stone-300/80 text-sm focus-visible:ring-1 focus-visible:ring-stone-300"
             autoFocus={!compact}
           />
         </div>
 
-        <div className="rounded-sm border border-stone-200/90 bg-white/70 px-2.5 py-2">
+        <div className="rounded-sm border border-stone-200/80 bg-white/70 px-2.5 py-2">
           <p className="mb-1 text-[10px] font-medium uppercase tracking-wider text-stone-500">
-            Step 3 · {intent === "buy" ? "Budget" : "Monthly budget"}
+            {intent === "buy" ? "Budget" : "Monthly budget"}
           </p>
           <Input
             type="number"
@@ -121,7 +121,7 @@ export function SearchControls(props: SearchControlsProps) {
             placeholder={intent === "buy" ? "e.g. 300000" : "e.g. 1600"}
             value={maxBudget}
             onChange={(e) => setMaxBudget(e.target.value)}
-            className="h-9 rounded border-stone-300/90 text-sm"
+            className="h-9 rounded border-stone-300/80 text-sm focus-visible:ring-1 focus-visible:ring-stone-300"
           />
         </div>
       </div>
@@ -129,9 +129,9 @@ export function SearchControls(props: SearchControlsProps) {
       <div className="flex items-center gap-2">
         <button
           type="submit"
-          className="h-9 rounded-sm border border-stone-300/90 bg-stone-800 px-4 text-xs font-semibold tracking-wide text-stone-50 hover:bg-stone-700"
+          className="h-9 w-full rounded-sm border border-stone-300/90 bg-stone-800 px-4 text-xs font-semibold tracking-wide text-stone-50 transition-colors hover:bg-stone-700 active:bg-stone-900 sm:w-auto"
         >
-          Step 4 · Search
+          Search
         </button>
         {showCloseBy && (
           <button
