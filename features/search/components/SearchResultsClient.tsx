@@ -7,8 +7,12 @@ import { FilterDrawer } from "./FilterDrawer";
 import { SaveSearchButton } from "./SaveSearchButton";
 import { ListingCard } from "@/features/listings/components/ListingCard";
 import { NearbySearchView } from "./NearbySearchView";
-import { searchListings } from "@/app/search/actions";
 import type { SearchIntent, ListingFilters } from "@/types";
+import { MockListingsProvider } from "@/services/providers/mock-listings";
+import type { ListingsSearchResult } from "@/services/providers/property-listings.interface";
+
+const provider = new MockListingsProvider();
+const LOCAL_QUERY_PATTERN = /\b(manchester|salford|m\d{1,2})\b/i;
 
 interface SearchResultsClientProps {
   initialQuery: string;
@@ -29,7 +33,7 @@ export function SearchResultsClient({
   const [filters, setFilters] = useState<ListingFilters>(
     initialMaxBudget != null ? { maxBudget: initialMaxBudget } : {}
   );
-  const [listings, setListings] = useState<Awaited<ReturnType<typeof searchListings>> | null>(null);
+  const [listings, setListings] = useState<ListingsSearchResult | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchListings = useCallback(() => {
@@ -37,8 +41,20 @@ export function SearchResultsClient({
       setLoading(false);
       return;
     }
+    if (!LOCAL_QUERY_PATTERN.test(query.trim())) {
+      setListings({
+        listings: [],
+        totalCount: 0,
+        source: "Manchester + Salford only",
+        refreshedAt: new Date().toISOString(),
+        query: { query, intent },
+        filters,
+      });
+      setLoading(false);
+      return;
+    }
     setLoading(true);
-    searchListings(query.trim(), intent, filters)
+    provider.search({ query: query.trim(), intent }, filters)
       .then(setListings)
       .finally(() => setLoading(false));
   }, [query, intent, filters]);

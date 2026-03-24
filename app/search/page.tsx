@@ -1,15 +1,16 @@
+"use client";
+
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { SearchResultsClient } from "@/features/search/components/SearchResultsClient";
 
-interface SearchPageProps {
-  searchParams: Promise<{ q?: string; intent?: string; mode?: string; maxBudget?: string }>;
-}
-
-export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const params = await searchParams;
-  const query = params.q ?? "";
-  const intent = (params.intent === "rent" ? "rent" : "buy") as "rent" | "buy";
-  const mode = params.mode === "nearby" ? "nearby" : "search";
-  const maxBudget = params.maxBudget ? Number(params.maxBudget) : undefined;
+function SearchPageContent() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") ?? "";
+  const intent = searchParams.get("intent") === "rent" ? "rent" : "buy";
+  const mode = searchParams.get("mode") === "nearby" ? "nearby" : "search";
+  const maxBudgetParam = searchParams.get("maxBudget");
+  const maxBudget = maxBudgetParam ? Number(maxBudgetParam) : undefined;
   const initialMaxBudget =
     maxBudget != null && Number.isFinite(maxBudget) && maxBudget > 0 ? Math.round(maxBudget) : undefined;
 
@@ -22,5 +23,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         initialMaxBudget={initialMaxBudget}
       />
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <p className="text-sm text-stone-500">Loading search...</p>
+        </div>
+      }
+    >
+      <SearchPageContent />
+    </Suspense>
   );
 }
